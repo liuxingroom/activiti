@@ -15,7 +15,7 @@ import com.xing.activiti.service.PurBusUserService;
 public class LoginController {
 
 	@Resource
-    PurBusUserService userService;
+	PurBusUserService purBusUserService;
 	
 	
 	@RequestMapping("/login.action")
@@ -27,7 +27,7 @@ public class LoginController {
 	@RequestMapping("/loginSubmit.action")
 	public String loginSubmit(HttpSession session,String userId,String pwd){
 		if(StringUtils.isNotEmpty(userId) && StringUtils.isNotEmpty(pwd)){
-			PurSysUser user=userService.checkUser(userId,pwd);
+			PurSysUser user=purBusUserService.checkUser(userId,pwd);
 			if(user!=null){
 				return "first";
 			}

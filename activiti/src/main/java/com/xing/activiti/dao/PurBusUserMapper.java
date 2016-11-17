@@ -6,6 +6,6 @@ import com.xing.activiti.entity.PurSysUser;
 
 public interface PurBusUserMapper {
 
-	PurSysUser checkUser(@Param("username")String userId, @Param("id")String pwd);
+	PurSysUser checkUser(@Param("username")String userId, @Param("pwd")String pwd);
 
 }

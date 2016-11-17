@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xing.activiti.dao.PurBusUserMapper">
+	<resultMap type="com.xing.activiti.entity.PurSysUser" id="PsuResultMap">
+		<id column="user_id" property="id" jdbcType="VARCHAR"/>
+		<result column="username" property="userName" jdbcType="VARCHAR"/>
+		<result column="pwd" property="pwd" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="checkUser" resultMap="PsuResultMap">
+		select * from pur_sys_user where username=#{username} and pwd=#{pwd}
+	</select>
+</mapper>
