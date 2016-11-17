@@ -26,7 +26,7 @@
   
   <servlet-mapping>
     <servlet-name>springmvc</servlet-name>
-    <url-pattern>/</url-pattern>
+    <url-pattern>*.action</url-pattern>
   </servlet-mapping>
   
   <!-- 3 整合CXF webService-->

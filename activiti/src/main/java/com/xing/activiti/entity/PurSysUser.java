@@ -1,4 +1,4 @@
-package com.xing.purchasing.entity;
+package com.xing.activiti.entity;
 
 import java.io.Serializable;
 

@@ -18,7 +18,7 @@
 	
 	
 	<!-- 扫描 @Controller注解 -->
-	<context:component-scan base-package="com.xing.activiti.*.controller"></context:component-scan>
+	<context:component-scan base-package="com.xing.activiti.**.controller"></context:component-scan>
 	
 	<!-- 代替了处理器映射器，和处理器适配器 -->
 	<mvc:annotation-driven/>
@@ -26,8 +26,14 @@
 	<!-- 配置视图解析器 -->
 	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<!-- 视图前缀 -->
-		<property name="prefix" value="/WEB-INF/pages/"></property>
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<!-- 视图后缀 -->
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+	
+	<!-- 不拦截静态资源的请求（如css，js等请求） -->
+	<!-- <mvc:resources location="/images/" mapping="/images/**"/>
+	<mvc:resources location="/js/" mapping="/js/**"/>
+	<mvc:resources location="/styles/" mapping="/styles/**"/>
+	<mvc:resources location="/dwr/" mapping="/dwr/**"/> -->
 </beans>
