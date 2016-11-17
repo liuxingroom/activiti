@@ -29,6 +29,7 @@ public class LoginController {
 		if(StringUtils.isNotEmpty(userId) && StringUtils.isNotEmpty(pwd)){
 			PurSysUser user=purBusUserService.checkUser(userId,pwd);
 			if(user!=null){
+				session.setAttribute("userId", userId);   //用户登录后在session中设置登录标志
 				return "first";
 			}
 		}

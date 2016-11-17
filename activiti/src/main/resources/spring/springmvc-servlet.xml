@@ -31,6 +31,13 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 	
+	<!-- 设置文件上传的拦截器 -->
+	<bean id="multipartResolver"  
+			class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 设置上传文件的最大为5MB -->
+		<property name="maxUploadSize" value="5242880"></property>		
+	</bean>
+	
 	<!-- 不拦截静态资源的请求（如css，js等请求） -->
 	<!-- <mvc:resources location="/images/" mapping="/images/**"/>
 	<mvc:resources location="/js/" mapping="/js/**"/>
