@@ -11,6 +11,7 @@
     <org.springframework.version>3.2.6.RELEASE</org.springframework.version>
     <json.version>2.6.0-rc3</json.version>
     <druid-version>1.0.13</druid-version>
+    <activiti.version>5.17.0</activiti.version>
   </properties>
   
   <dependencies>
@@ -221,7 +222,53 @@
 		<groupId>com.google.gwt</groupId>
 		<artifactId>gwt-servlet</artifactId>
 		<version>2.3.0</version>
-	  </dependency>	
+	  </dependency>
+	  <dependency>
+		<groupId>org.activiti</groupId>
+		<artifactId>activiti-engine</artifactId>
+		<version>${activiti.version}</version>
+	  </dependency>
+	  <dependency>
+  	 	<groupId>org.activiti</groupId>
+  	 	<artifactId>activiti-spring</artifactId>
+  	 	<version>${activiti.version}</version>
+  	 </dependency>
+  	 <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-explorer</artifactId>
+      <version>${activiti.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-modeler</artifactId>
+      <version>${activiti.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>xalan</groupId>
+          <artifactId>xalan</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-diagram-rest</artifactId>
+      <version>${activiti.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-simple-workflow</artifactId>
+      <version>${activiti.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-rest</artifactId>
+      <version>${activiti.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.activiti</groupId>
+      <artifactId>activiti-json-converter</artifactId>
+      <version>${activiti.version}</version>
+    </dependency>	
   </dependencies>
   <build>  
 	    <plugins>  

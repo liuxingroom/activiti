@@ -43,6 +43,8 @@
 			<property name="maxOpenPreparedStatements" value="300" />
 		</bean>
 		
+		<!-- 引入activiti 配置文件 -->
+		<import resource="../activiti.cfg.xml"/>
 		<!--配置数据链接  -->
 		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 			<!-- 配置数据源 -->
