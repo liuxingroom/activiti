@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xing.activiti.dao.PurBusOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.xing.activiti.entity.PurBusOrder" >
+    <id column="order_id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="processInstance_id" property="processinstanceId" jdbcType="VARCHAR" />
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+
+	<!-- 新增采购单 -->
+  <insert id="insert" parameterType="com.xing.activiti.entity.PurBusOrder" >
+    insert into pur_bus_order (order_id, name, price, 
+      createtime, status, user_id, 
+      processInstance_id, endtime, content
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=REAL}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{processinstanceId,jdbcType=VARCHAR}, #{endtime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  
+  <!-- 根据采购单id来获取采购单信息 -->
+  <select id="getPurBusOrderById" resultMap="BaseResultMap">
+  	   select * from pur_bus_order where order_id=#{orderId}
+  </select>
+  
+  
+ 
+</mapper>

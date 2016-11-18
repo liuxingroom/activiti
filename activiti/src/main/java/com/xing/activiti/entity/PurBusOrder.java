@@ -35,15 +35,24 @@ public class PurBusOrder implements Serializable{
 	/**采购单金额*/
 	private Double price;
 	/**采购单创建时间*/
-	private Date createTime;
+	private Date createtime;
 	/**采购单状态*/
 	private String status;
 	/**创建人*/
 	private String userId;
 	/**采购单所对应的流程实例id*/
-	private String processInstanceId;
+	private String processinstanceId;
 	/**采购单结束时间*/
-	private Date endTime;
+	private Date endtime;
+	
+	private String content;
+	
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 	public String getId() {
 		return id;
 	}
@@ -62,11 +71,11 @@ public class PurBusOrder implements Serializable{
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	public Date getCreateTime() {
-		return createTime;
+	public Date getCreatetime() {
+		return createtime;
 	}
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
 	}
 	public String getStatus() {
 		return status;
@@ -80,18 +89,18 @@ public class PurBusOrder implements Serializable{
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getProcessInstanceId() {
-		return processInstanceId;
-	}
-	public void setProcessInstanceId(String processInstanceId) {
-		this.processInstanceId = processInstanceId;
-	}
-	public Date getEndTime() {
-		return endTime;
-	}
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
 	
+	public String getProcessinstanceId() {
+		return processinstanceId;
+	}
+	public void setProcessinstanceId(String processinstanceId) {
+		this.processinstanceId = processinstanceId;
+	}
+	public Date getEndtime() {
+		return endtime;
+	}
+	public void setEndtime(Date endtime) {
+		this.endtime = endtime;
+	}
 	
 }
