@@ -48,7 +48,8 @@ public class ResourceUtil {
 	private static String getProperties(String fileName, String key) {
 		String retValue="";
 		Locale locale=getLocale();
-		ResourceBundle rb=ResourceBundle.getBundle(fileName, locale);
+		//ResourceBundle rb=ResourceBundle.getBundle(fileName, locale);
+		ResourceBundle rb=ResourceBundle.getBundle(fileName,Locale.SIMPLIFIED_CHINESE);
 		retValue=(String)rb.getObject(key);
 		return retValue;
 	}
