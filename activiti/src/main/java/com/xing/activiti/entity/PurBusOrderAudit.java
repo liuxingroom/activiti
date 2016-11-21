@@ -1,6 +1,7 @@
 package com.xing.activiti.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 采购单审核信息  pur_bus_order_audit
@@ -47,7 +48,7 @@ public class PurBusOrderAudit implements Serializable{
 	 * */
 	private String status;
 	/**审核时间*/
-	private String createTime;
+	private Date createTime;
 	public String getId() {
 		return id;
 	}
@@ -84,10 +85,10 @@ public class PurBusOrderAudit implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 	
