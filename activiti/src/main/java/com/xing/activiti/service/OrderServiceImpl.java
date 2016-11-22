@@ -1,6 +1,5 @@
 package com.xing.activiti.service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
