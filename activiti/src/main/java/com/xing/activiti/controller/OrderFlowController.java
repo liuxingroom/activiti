@@ -130,4 +130,68 @@ public class OrderFlowController {
 		return "redirect:orderGroupTaskList.action";
 	}
 	
+	
+	/**
+	 * 查看当前运行的采购流程
+	 * @throws Exception 
+	 */
+	@RequestMapping("/queryActivityOrder.action")
+	public String queryActivityOrder(Model model) throws Exception{
+		//获取当前运行采购流列表
+		List<OrderCustom> list=orderService.findActivityOrderList();
+		model.addAttribute("list", list);
+		return "order/queryActivityOrder";
+	}
+	
+	/**
+	 * 根据流程实例id查询历史任务
+	 */
+	@RequestMapping("/queryOrderTaskByPid.action")
+	public String queryOrderTaskByPid(Model model,String processInstanceId){
+		
+		//通过流程定义id来获取流程历史任务信息
+		List<OrderCustom> list=orderService.findOrderTaskListByPid(processInstanceId);
+		
+		model.addAttribute("list", list);
+		return "order/queryOrderTaskByPid";
+	}
+	
+	/**
+	 * 查询结束流程
+	 * @throws Exception 
+	 */
+	@RequestMapping("/queryHistoryOrder.action")
+	public String queryHistoryOrder(Model model) throws Exception{
+		
+		//查询已结束的流程实例
+		List<OrderCustom> list=orderService.findFinishedOrderList();
+		
+		model.addAttribute("list", list);
+		return "order/queryHistoryOrder";
+	}
+	
+	/**
+	 * 财务结算
+	 */
+	@RequestMapping("/settlement.action")
+	public String settlement(HttpSession session,String taskId){
+		//获取当前登录对象
+		String userId=(String) session.getAttribute("userId");
+		orderService.saveSettlement(taskId,userId);
+		
+		return "redirect:orderTaskList.action";
+	}
+	
+	/**
+	 * 入库
+	 */
+	@RequestMapping("/storage.action")
+	public String storage(HttpSession session,String taskId){
+		//获取登录人的信息
+		String userId=(String) session.getAttribute("userId");
+		
+		orderService.storage(userId,taskId);
+		return "redirect:orderTaskList.action";
+	}
+	
 }

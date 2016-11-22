@@ -56,4 +56,39 @@ public interface OrderService {
 	public void saveOrderAuditStatus(String taskId, String userId,
 			String orderId, String auditType, OrderAuditCustom orderAuditCustom);
 
+	/**
+	 * 查看当前运行的流程
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<OrderCustom> findActivityOrderList() throws Exception;
+
+	/**
+	 * 根据流程定义的id来获取任务信息
+	 * @param processInstanceId
+	 * @return
+	 */
+	public List<OrderCustom> findOrderTaskListByPid(String processInstanceId);
+	
+	/**
+	 * 查询已结束的流程实例
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<OrderCustom> findFinishedOrderList() throws Exception;
+
+	/**
+	 * 财务结算
+	 * @param taskId
+	 * @param userId
+	 */
+	public void saveSettlement(String taskId, String userId);
+
+	/**
+	 * 入库
+	 * @param userId
+	 * @param taskId
+	 */
+	public void storage(String userId, String taskId);
+
 }

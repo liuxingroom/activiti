@@ -9,10 +9,16 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricProcessInstanceQuery;
+import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.beanutils.BeanUtils;
@@ -49,6 +55,9 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Resource
 	PurBusOrderAuditMapper purBusOrderAuditMapper;
+	
+	@Resource
+	HistoryService historyService;
 
 	@Override
 	@Transactional
@@ -73,7 +82,7 @@ public class OrderServiceImpl implements OrderService{
 				startProcessInstanceByKey(processDefinitionKey, businessKey);
 		
 		//获取流程实例id
-		String processInstanceId=processInstance.getProcessDefinitionId();
+		String processInstanceId=processInstance.getProcessInstanceId();
 	
 		//获取流程实例执行id
 		String executeID=processInstance.getId();
@@ -301,6 +310,158 @@ public class OrderServiceImpl implements OrderService{
 			
 			//提交审核时，设置流程变量，变量就是审核信息
 			taskService.complete(taskId, variables);
+		}
+	}
+
+	@Override
+	public List<OrderCustom> findActivityOrderList() throws Exception {
+		//获取流程定义的key
+		String processDefinitionKey=ResourceUtil.getValue(
+				"diagram.purchasingflow", "purchasingProcessDefinitionKey");
+		
+		
+		/*获取流程实例查询对象       并设置查询条件以及排序字段*/
+		ProcessInstanceQuery processInstanceQuery=runtimeService.createProcessInstanceQuery().
+				processDefinitionKey(processDefinitionKey).
+				orderByProcessInstanceId().
+				desc();
+		
+		//获取当前列表
+		List<ProcessInstance> list=processInstanceQuery.list();
+		//单独定义一个list，list中包括自定义的pojo(OrderCustom包括流程实例信息和业务系统信息)
+		List<OrderCustom> orderList=new ArrayList<OrderCustom>();
+		
+		for(ProcessInstance instance:list){
+			//定义一个包装对象
+			OrderCustom orderCustom=new OrderCustom();
+			
+			// 比如key为采购流程，这个key就是采购单id
+			String businessKey=instance.getBusinessKey();
+			
+			String orderId=businessKey;
+			//根据业务标识businessKey来获取采购单信息
+			PurBusOrder  purBusOrder=purBusOrderMapper.getPurBusOrderById(orderId);
+			
+			// 向orderCustom中填充流程实例 信息
+			// 当前运行的结点
+			BeanUtils.copyProperties(orderCustom, purBusOrder);
+			orderCustom.setActivityId(instance.getActivityId());
+			
+			orderList.add(orderCustom);
+		}
+		
+		return orderList;
+	}
+
+	@Override
+	public List<OrderCustom> findOrderTaskListByPid(String processInstanceId) {
+		
+		//获取流程定义的key
+		String processDefinitionKey= ResourceUtil.getValue(
+				"diagram.purchasingflow", "purchasingProcessDefinitionKey");
+		
+		//创建历史任务查询对象
+		HistoricTaskInstanceQuery historicTaskInstanceQuery =historyService.createHistoricTaskInstanceQuery();
+		
+		//设置查询对象（流程定义的key）
+		historicTaskInstanceQuery.processDefinitionKey(processDefinitionKey);
+		//设置查询对象（流程实例的id）
+		historicTaskInstanceQuery.processInstanceId(processInstanceId);
+		
+		//添加排序，按照任务执行时间先后排序
+		historicTaskInstanceQuery.orderByHistoricTaskInstanceStartTime().asc();
+		
+		//获取实例流程实例集合
+		List<HistoricTaskInstance> list=historicTaskInstanceQuery.list();
+		
+		//即使这里只查询activiti中的数据,不关联查询业务的数据，也要单独定义
+		//List<OrderCustom> 为了通过service和activiti和控制层隔离（达到解耦的效果）
+		List<OrderCustom> orderList=new ArrayList<OrderCustom>();
+		
+		for(HistoricTaskInstance historicTaskInstance:list){
+			OrderCustom orderCustom=new OrderCustom();
+			
+			orderCustom.setTaskId(historicTaskInstance.getId()); //任务id
+			orderCustom.setTaskName(historicTaskInstance.getName());  //任务名称
+			orderCustom.setAssignee(historicTaskInstance.getAssignee());  //任务负责人
+			orderCustom.setTaskDefinitionKey(historicTaskInstance.getTaskDefinitionKey()); //任务标识
+			orderCustom.setTask_startTime(historicTaskInstance.getStartTime());    //开始时间
+			orderCustom.setTask_endTime(historicTaskInstance.getEndTime());        //结束时间
+			
+		    orderList.add(orderCustom);
+		}
+		return orderList;
+	}
+
+	@Override
+	public List<OrderCustom> findFinishedOrderList() throws Exception {
+		
+		//获取流程定义的key
+		String processDefinitionKey=ResourceUtil.getValue("diagram.purchasingflow", "purchasingProcessDefinitionKey");
+		
+		//创建历史流程实例 查询对象
+		HistoricProcessInstanceQuery historicProcessInstanceQuery=historyService.createHistoricProcessInstanceQuery();
+		
+		//设置查询条件
+		//指定流程定义key，只查询某个业务流程的实例
+		historicProcessInstanceQuery.processDefinitionKey(processDefinitionKey);
+		
+		//设置只查询已完成的流程实例信息
+		historicProcessInstanceQuery.finished();
+		
+		//添加排序，按结束时间降序
+		historicProcessInstanceQuery.orderByProcessInstanceEndTime().desc();
+		
+		List<HistoricProcessInstance> list=historicProcessInstanceQuery.list();
+		
+		List<OrderCustom> orderList=new ArrayList<OrderCustom>();
+		for(HistoricProcessInstance historicProcessInstance:list){
+			OrderCustom orderCustom=new OrderCustom();
+			//业务标识
+			String businessKey=historicProcessInstance.getBusinessKey();
+			//根据businessKey（业务标识）获取采购单信息
+			PurBusOrder purBusOrder=purBusOrderMapper.getPurBusOrderById(businessKey);
+			
+			//将采购单信息拷贝到OrderCustom中
+			BeanUtils.copyProperties(orderCustom, purBusOrder);
+			
+			//设置activiti的数据到ordercustom中
+			//开始时间
+			orderCustom.setProcessInstance_startTime(historicProcessInstance.getStartTime());
+			
+			//结束时间
+			orderCustom.setProcessInstance_endTime(historicProcessInstance.getEndTime());
+			
+			orderList.add(orderCustom);
+		}
+		
+		return orderList;
+	}
+
+	@Override
+	public void saveSettlement(String taskId, String userId) {
+		/*获取当前要办理的任务*/
+		Task task=taskService.createTaskQuery().
+				taskAssignee(userId).
+				taskId(taskId).
+				singleResult();
+		if(task!=null){//如果当前任务 存在
+			taskService.complete(taskId);
+		}
+		
+	}
+	
+
+	@Override
+	public void storage(String userId, String taskId) {
+		/*获取当前要办理的任务*/
+		Task task=taskService.createTaskQuery().
+				taskAssignee(userId).
+				taskId(taskId).
+				singleResult();
+		
+		if(task!=null){//如果当前任务不为空
+			taskService.complete(taskId);
 		}
 	}
 }
