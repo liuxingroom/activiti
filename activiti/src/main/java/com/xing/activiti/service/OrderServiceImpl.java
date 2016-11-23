@@ -87,6 +87,9 @@ public class OrderServiceImpl implements OrderService{
 		//获取流程实例执行id
 		String executeID=processInstance.getId();
 		
+		//获取业务标识
+		String businesskey=processInstance.getBusinessKey();
+		
 		/*
 		 * 2.向采购单中插入一条记录
 		 */
