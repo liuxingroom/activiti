@@ -58,4 +58,10 @@
   </filter-mapping>
   <!-- 乱码过滤器结束 -->
   
+  <!-- request上下文监听 -->
+  <listener>
+  	   <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+  
+  
 </web-app>

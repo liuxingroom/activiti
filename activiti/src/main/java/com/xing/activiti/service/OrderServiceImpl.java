@@ -358,7 +358,6 @@ public class OrderServiceImpl implements OrderService{
 
 	@Override
 	public List<OrderCustom> findOrderTaskListByPid(String processInstanceId) {
-		
 		//获取流程定义的key
 		String processDefinitionKey= ResourceUtil.getValue(
 				"diagram.purchasingflow", "purchasingProcessDefinitionKey");
