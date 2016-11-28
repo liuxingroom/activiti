@@ -1,16 +1,14 @@
 package com.xing.activiti.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
 import java.util.ResourceBundle;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
-
 
 
 
@@ -58,5 +56,40 @@ public class ResourceUtil {
 		Locale locale = new Locale(LANGUAGE, COUNTRY);
 		return locale;
 	}
+	
+	/**
+	 * 获取配置文件中所有的value信息，并将所有的value信息封装到一个list集合中
+	 * @param baseName
+	 * @return
+	 */
+	public static List<String> geKeyList(String baseName){
+		Locale locale=getLocale();
+		ResourceBundle rb=ResourceBundle.getBundle(baseName, locale);
+		List<String> resList=new ArrayList<String>();
+		
+		Set<String> keyset=rb.keySet();
+		for(Iterator<String> it=keyset.iterator();it.hasNext();){
+			String lkey=it.next();
+			resList.add(lkey);
+		}
+		return resList;
+	}
 
+	
+	/**
+	 * 通过key从资源文件中获取内容，并格式化
+	 * @param fileName
+	 * @param key
+	 * @param objs
+	 * @return
+	 */
+	public static String getValue(String fileName,String key,Object [] objs){
+		String pattern=getValue(fileName, key);
+		String value=MessageFormat.format(pattern, objs);
+		return value;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(getValue("diagram.purchasingflow", "purchasingProcessDefinitionKey", new Object[]{1,10}));
+	}
 }
