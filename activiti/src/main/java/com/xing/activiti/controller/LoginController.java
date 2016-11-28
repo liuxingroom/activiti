@@ -17,13 +17,23 @@ public class LoginController {
 	@Resource
 	PurBusUserService purBusUserService;
 	
-	
+	/**
+	 * 跳转到登录页面
+	 * @return
+	 */
 	@RequestMapping("/login.action")
 	public String login(){
 		
 		return "login";
 	}
 	
+	/**
+	 * 登录
+	 * @param session
+	 * @param userId
+	 * @param pwd
+	 * @return
+	 */
 	@RequestMapping("/loginSubmit.action")
 	public String loginSubmit(HttpSession session,String userId,String pwd){
 		if(StringUtils.isNotEmpty(userId) && StringUtils.isNotEmpty(pwd)){
@@ -34,5 +44,15 @@ public class LoginController {
 			}
 		}
 		return "login";
+	}
+	
+	/**
+	 * 退出登录
+	 */
+	@RequestMapping("/logout.action")
+	public String logout(HttpSession session){
+		//清空session
+		session.invalidate();
+		return "redirect:login.action";
 	}
 }

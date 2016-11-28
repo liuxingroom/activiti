@@ -19,5 +19,11 @@ public interface PurBusOrderMapper {
 	 * @return
 	 */
 	public PurBusOrder getPurBusOrderById(@Param("orderId")String orderId);
+
+	/**
+	 * 更新采购单的信息
+	 * @param purBusOrder
+	 */
+	public void updatePurBusOrder(PurBusOrder purBusOrder);
 	
 }
