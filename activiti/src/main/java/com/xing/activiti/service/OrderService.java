@@ -91,4 +91,16 @@ public interface OrderService {
 	 */
 	public void storage(String userId, String taskId);
 
+	
+	/**
+	 * 根据流程定义的key来激活改流程
+	 * 如果流程定义暂停或激活，不能再启动该流程定义的流程实例了!!!
+	 */
+	public void suspendOrActivateProcessDefinition();
+	
+	
+	/**
+	 * 根据流程实例id来暂停或者激活该流程实例
+	 */
+	public void suspendOrActivateProcessInstance(String processInstanceId);
 }

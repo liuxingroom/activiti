@@ -13,24 +13,33 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-3.1.xsd ">
 	
-	<!-- 工作流引擎配置bean -->
+	<!-- 配置工作流引擎配置 对象 -->
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
 		<!-- 配置数据源 -->
 		<property name="dataSource" ref="dataSource"></property>
 		<!-- 使用spring事务管理器 -->
 		<property name="transactionManager" ref="transactionManager"></property>
-		<!--数据库策略  -->
+		<!--数据库策略  
+			false（默认）：检查数据库表的版本和依赖库的版本， 如果版本不匹配就抛出异常。
+			true: 构建流程引擎时，执行检查，如果需要就执行更新。 如果表不存在，就创建。（常用）
+			create-drop: 构建流程引擎时创建数据库表， 关闭流程引擎时删除这些表。
+			drop-create：先删除表再创建表。（常用，使用完成后改为true）
+			create: 构建流程引擎时创建数据库表， 关闭流程引擎时不删除这些表。
+		-->
 		<property name="databaseSchemaUpdate" value="true"></property>
 		<!-- activiti的定时任务关闭 -->
 		<property name="jobExecutorActivate" value="false"></property>
 	</bean>
 	
-	<!-- 流程引擎 -->
+	<!-- 配置 流程引擎对象 -->
 	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
 		<property name="processEngineConfiguration" ref="processEngineConfiguration"></property>
 	</bean>
 	
-	<!-- 资源服务service -->
+	<!--配置 资源服务service 对象 
+		作用：如果在Controller  或者Service中使用该对象时
+		就可以通过注解的方式     直接将对象注入使用
+	-->
 	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"></bean>
 	<!-- 流程运行的service -->
 	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"></bean>	

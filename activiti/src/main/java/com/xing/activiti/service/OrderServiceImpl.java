@@ -11,12 +11,18 @@ import javax.annotation.Resource;
 
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngineConfiguration;
+import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
@@ -58,6 +64,9 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Resource
 	HistoryService historyService;
+	
+	@Resource
+	RepositoryService repositoryService;
 
 	@Override
 	@Transactional
@@ -70,6 +79,7 @@ public class OrderServiceImpl implements OrderService{
 				"diagram.purchasingflow", "purchasingProcessDefinitionKey");    //采购流程标识
 		
 		//业务标识
+		//业务标识就是改采购单的id
 		String businessKey=orderId;
 		//注意：设置流程发起人应该在启动流程之前
 		//设置流程发起人
@@ -86,6 +96,9 @@ public class OrderServiceImpl implements OrderService{
 	
 		//获取流程实例执行id
 		String executeID=processInstance.getId();
+		
+		//获取当前正在运行的节点信息
+		String activityId=processInstance.getActivityId();
 		
 		//获取业务标识
 		String businesskey=processInstance.getBusinessKey();
@@ -466,5 +479,53 @@ public class OrderServiceImpl implements OrderService{
 			taskService.complete(taskId);
 		}
 	}
+
+	@Override
+	public void suspendOrActivateProcessDefinition() {
+		//获取流程定义的key
+		String processDefinitionKey=ResourceUtil.getValue("diagram.purchasingflow", "purchasingProcessDefinitionKey");
+		//获取流程定义查询对象
+		ProcessDefinitionQuery definitionQuery= 
+				repositoryService.createProcessDefinitionQuery();
+		definitionQuery.processDefinitionKey(processDefinitionKey);
+		
+		ProcessDefinition processDefinition=definitionQuery.singleResult();
+		
+		//判断流程定义是否挂起
+		boolean suspend=processDefinition.isSuspended();
+		
+		if(suspend){//如果该流程已经挂起
+			//激活该流程定义所属的所有的流程实例
+			repositoryService.activateProcessDefinitionByKey(processDefinitionKey);
+		}else{
+			//挂起改流程定义所属的所有的流程实例
+			repositoryService.suspendProcessDefinitionByKey(processDefinitionKey);
+		}
+		
+	}
+
+	@Override
+	public void suspendOrActivateProcessInstance(String processInstanceId) {
+		//获取流程实例的查询对象
+		ProcessInstanceQuery processInstanceQuery=
+				runtimeService.createProcessInstanceQuery();
+		
+		//获取流程实例对象
+		ProcessInstance processInstance=processInstanceQuery.
+				processInstanceId(processInstanceId).
+				singleResult();
+		//判断该流程实例的状态（激活、挂起）
+		boolean suspend=processInstance.isSuspended();
+		
+		if(suspend){//如果挂起
+			//激活该流程实例
+			runtimeService.activateProcessInstanceById(processInstanceId);
+		}else{
+			//挂起该流程实例
+			runtimeService.suspendProcessInstanceById(processInstanceId);
+		}
+		
+	}
+	
 }
 
