@@ -1,16 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/tag.jsp"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <LINK rel="stylesheet" type="text/css" href="${baseurl}js/easyui/styles/default.css">
+<!--css引入-->
+<link href='<c:url value="/statics/ueditor1_4_3/themes/default/css/ueditor.css" />' rel='stylesheet'>
+
+<!--js插件的引入-->
+<script src="<c:url value="/statics/ueditor1_4_3/ueditor.config.js" />"></script>
+<script src="<c:url value="/statics/ueditor1_4_3/ueditor.all.js" />"></script>
+<script src="<c:url value="/statics/ueditor1_4_3/lang/zh-cn/zh-cn.js" />"></script>
 <%@ include file="/WEB-INF/jsp/common_css.jsp"%>
 <%@ include file="/WEB-INF/jsp/common_js.jsp"%>
 <title>创建采购单</title>
 
 <script type="text/javascript">
+ var ue = new baidu.editor.ui.Editor();
+ue.render('remark');
+
 function ordersave(){
 	document.orderform.submit();
 	
@@ -71,6 +82,9 @@ function ordersave(){
 								<a id="submitbtn"  class="easyui-linkbutton"   iconCls="icon-ok" href="#" onclick="ordersave()">提交</a>
 								<a id="closebtn"  class="easyui-linkbutton" iconCls="icon-cancel" href="#" onclick="parent.closemodalwindow()">关闭</a>
 							  </td>
+							</tr>
+							<tr>
+								<textarea name="remark" id="remark" ></textarea>
 							</tr>
 						
 							</TBODY>

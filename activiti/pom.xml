@@ -269,6 +269,13 @@
       <artifactId>activiti-json-converter</artifactId>
       <version>${activiti.version}</version>
     </dependency>	
+    
+    <!-- 富文本编辑器 -->
+    <dependency>
+		<groupId>com.baidu.ueditor</groupId>
+		<artifactId>ueditor</artifactId>
+		<version>1.1.1</version>
+	</dependency>
   </dependencies>
   <build>  
 	    <plugins>  

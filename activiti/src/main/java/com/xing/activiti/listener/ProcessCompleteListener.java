@@ -36,7 +36,7 @@ public class ProcessCompleteListener implements ExecutionListener{
 		//通过pur_bus_order 的mapper更新pur_bus_order
 		
 		//从spring容器重得到mapper
-		PurBusOrderMapper busOrderMapper=(PurBusOrderMapper) applicationContext.getBean(PurBusOrder.class);
+		PurBusOrderMapper busOrderMapper=(PurBusOrderMapper) applicationContext.getBean(PurBusOrderMapper.class);
 		
 		//根据采购单的id更新status状态值为complete
 		PurBusOrder purBusOrder=new PurBusOrder();
