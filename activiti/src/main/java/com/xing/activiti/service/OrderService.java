@@ -58,13 +58,14 @@ public interface OrderService {
 
 	/**
 	 * 查看当前运行的流程
+	 * 所谓当前运行的流程     即: 查看当前启动的流程实例信息
 	 * @return
 	 * @throws Exception 
 	 */
 	public List<OrderCustom> findActivityOrderList() throws Exception;
 
 	/**
-	 * 根据流程定义的id来获取任务信息
+	 * 根据流程定义的id来获取历史任务信息
 	 * @param processInstanceId
 	 * @return
 	 */
