@@ -44,7 +44,7 @@ public class ProcessCompleteListener implements ExecutionListener{
 		purBusOrder.setStatus("complete");//更新status状态值为complete
 		
 		busOrderMapper.updatePurBusOrder(purBusOrder);
-		}
+	}
 		
 		
 	}
