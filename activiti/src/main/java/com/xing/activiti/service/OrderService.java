@@ -104,4 +104,14 @@ public interface OrderService {
 	 * 根据流程实例id来暂停或者激活该流程实例
 	 */
 	public void suspendOrActivateProcessInstance(String processInstanceId);
+	
+	/**
+	 * 全局流程变量    设置的4种方式
+	 */
+	public void setGolbalVariable();
+	
+	/**
+	 * 局部流程变量   设置的2种方式 
+	 */
+	public void setLocalVariable();
 }

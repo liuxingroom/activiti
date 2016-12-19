@@ -12,6 +12,8 @@ import com.xing.activiti.util.ApplicationContextUtils;
 
 /**
  *	任务监听
+ *	该监听器的使用场景：在给任务分配负责人时可以使用改分配方式。
+ *
  */
 public class ProcessCompleteTaskListener implements TaskListener{
 

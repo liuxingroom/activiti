@@ -526,6 +526,68 @@ public class OrderServiceImpl implements OrderService{
 		}
 		
 	}
+
+	@Override
+	public void setGolbalVariable() {
+		String processDefinitionKey=ResourceUtil.getValue("diagram.purchasingflow", "purchasingProcessDefinitionKey");
+		String businessKey="";
+		String taskId="";
+		String executionId="";
+		String variableName="";
+		String value="";
+		/*
+		 * 第一种设置   在启动流程时
+		 */
+		Map<String, Object> variables=new HashMap<String, Object>();
+		runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
+		
+		/*
+		 * 第二种设置方式    在完成任务时
+		 */
+		taskService.complete(taskId, variables);
+		
+		/* 第三种
+		 * 通过流程实例的id来设置流程变量(设置一个变量)
+		 * executionId ：流程实例的执行id
+		 * variableName  变量名
+		 * value  变量值
+		 */
+		runtimeService.setVariable(executionId, variableName, value);
+		//设置多个变量
+		runtimeService.setVariables(executionId, variables);
 	
+		/*
+		 * 第四种
+		 * 通过当前代办任务的id 来设置流程变量  (设置一个变量)
+		 * executionId ：流程实例的执行id
+		 * variableName  变量名
+		 * value  变量值
+		 */
+		taskService.setVariable(taskId, variableName, value);
+		//设置多个变量
+		runtimeService.setVariables(executionId, variables);
+
+	}
+
+	@Override
+	public void setLocalVariable() {
+	
+		Map<String, Object> variables=new HashMap<String, Object>();
+		String taskId="";
+		String variableName="";
+		String value="";
+		
+		//注意：当局部变量消失时在使用改变量  会报错
+		/*
+		 * 第一种局部变量设置方式   
+		 *  通过当前任务id来设置局部变量   (设置一个局部变量)
+		 *  variableName 局部变量的名字
+		 *  value  局部变量的值
+		 */
+		taskService.setVariableLocal(taskId, variableName, value);
+		//设置多个局部变量
+		taskService.setVariablesLocal(taskId, variables);
+		
+	}	
 }
 
