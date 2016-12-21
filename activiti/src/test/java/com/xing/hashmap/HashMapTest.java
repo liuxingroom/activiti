@@ -10,7 +10,7 @@ public class HashMapTest {
 		/*
 		 *  hashmap集合中key value值 可以为空 
 		 */
-		Map<String, String> map=new HashMap<String, String>();
+		HashMap<String, String> map=new HashMap<String, String>();
 		map.put(null, null);
 		Map<String,String> maps=new LinkedHashMap<String, String>();
 		maps.put(null, null);
@@ -23,5 +23,15 @@ public class HashMapTest {
 		System.out.println(map.get(null)+"-----------");
 		System.out.println(maps.get(null)+"-----------");
 		System.out.println(table.get("ss")+"----------");
+		
+		/**
+		 * 	总结：
+		 *	hashmap进行存储时  如果别存储的数据的key，
+		 *	value都相同  就会返回此次存储的value值
+		 *	如果value不相同， 就会返回null
+		 */
+		String  ll=map.put("ssss", "dddd");
+		String  lls=map.put("ssss", "dddd");
+		System.out.println(lls);
 	}
 }
