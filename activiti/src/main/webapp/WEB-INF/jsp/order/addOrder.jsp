@@ -83,9 +83,9 @@ function ordersave(){
 								<a id="closebtn"  class="easyui-linkbutton" iconCls="icon-cancel" href="#" onclick="parent.closemodalwindow()">关闭</a>
 							  </td>
 							</tr>
-							<tr>
+							<!-- <tr>
 								<textarea name="remark" id="remark" ></textarea>
-							</tr>
+							</tr> -->
 						
 							</TBODY>
 						</TABLE>

@@ -80,7 +80,7 @@ public class OrderServiceImpl implements OrderService{
 		String businessKey=orderId;
 		//注意：设置流程发起人应该在启动流程之前
 		//设置流程发起人
-		identityService.setAuthenticatedUserId(userId);
+		identityService.setAuthenticatedUserId("zhangsan");
 		
 		/*
 		 * 1.启动流程实例(通过流程定义的key，和业务标识来启动一个流程实例)
