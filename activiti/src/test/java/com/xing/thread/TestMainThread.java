@@ -1,11 +1,8 @@
 package com.xing.thread;
 
-import org.junit.Test;
-
-public class TestThread {
-	
-	@Test
-	public void testThread(){
+public class TestMainThread {
+	public static void main(String[] args) {
+		
 		Thread thread=new Thread(new Runnable() {
 			
 			@Override
@@ -16,6 +13,9 @@ public class TestThread {
 				
 			}
 		});
+		
 		thread.start();
+		
+		System.exit(0);
 	}
 }
