@@ -26,4 +26,17 @@ public class HashSets {
 			System.out.println(se);
 		}
 	}
+	
+	@Test
+	public void testYunSuan(){
+		int a=2;
+		int b=3;
+		System.out.println("原来的a                a="+a);
+		System.out.println("原来的b                b="+b);
+		a=a^b;
+		b=b^a;
+		a=a^b;
+		System.out.println("现在的a                a="+a);
+		System.out.println("现在的b                b="+b);
+	}
 }	
